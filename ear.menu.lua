@@ -1,39 +1,24 @@
--- EAR HUB - Premium GUI Menu (Fully Masked)
+-- EAR HUB - Premium GUI Menu (Fixed)
 -- Roblox Volleyball Legend Script
--- Dark theme with purple neon glow + CoreGui masking
+-- Dark theme with proper rounded corners
 
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
 -- ============================================
--- MASKING SYSTEM - Hide GUI as System Interface
+-- MASKING SYSTEM
 -- ============================================
 
--- List of legitimate system GUI names
 local SYSTEM_GUI_NAMES = {
-    "RobloxGui",
-    "BubbleChat",
-    "Chat",
-    "NotificationGui",
-    "PlayerList",
-    "Backpack",
-    "Health",
-    "StarterGui",
-    "CoreGui",
-    "MessageGui",
-    "DialogGui",
-    "BanPopupGui",
-    "PurchasePrompt",
-    "PurchasePromptGui",
-    "RobloxPrompts",
-    "ConfirmGui",
-    "ErrorGui"
+    "RobloxGui", "BubbleChat", "Chat", "NotificationGui",
+    "PlayerList", "Backpack", "Health", "StarterGui",
+    "CoreGui", "MessageGui", "DialogGui", "BanPopupGui",
+    "PurchasePrompt", "PurchasePromptGui", "RobloxPrompts",
+    "ConfirmGui", "ErrorGui"
 }
 
--- Function to get existing GUI names in CoreGui
 local function getExistingGuiNames()
     local existing = {}
     for _, child in ipairs(CoreGui:GetChildren()) do
@@ -44,7 +29,6 @@ local function getExistingGuiNames()
     return existing
 end
 
--- Function to get a safe, unused system name
 local function getSafeSystemName()
     local existingNames = getExistingGuiNames()
     local availableNames = {}
@@ -69,11 +53,10 @@ local function getSafeSystemName()
     return availableNames[math.random(1, #availableNames)]
 end
 
--- Get masked name
 local MASKED_NAME = getSafeSystemName()
 
 -- ============================================
--- CREATE MASKED SCREENGUI IN COREGUI
+-- CREATE SCREENGUI
 -- ============================================
 
 local screenGui = Instance.new("ScreenGui")
@@ -86,32 +69,34 @@ screenGui.Parent = CoreGui
 print("[EAR HUB] Masked as: " .. MASKED_NAME)
 
 -- ============================================
--- MAIN MENU UI
+-- MAIN MENU - DARK BACKGROUND
 -- ============================================
 
--- Main Frame (640x470)
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
 mainFrame.Size = UDim2.new(0, 640, 0, 470)
 mainFrame.Position = UDim2.new(0.5, -320, 0.5, -235)
-mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+mainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15) -- ОЧЕНЬ ТЕМНЫЙ
 mainFrame.BackgroundTransparency = 0
 mainFrame.BorderSizePixel = 0
 mainFrame.ClipsDescendants = true
 mainFrame.Parent = screenGui
 
--- Rounded corners
+-- ПРАВИЛЬНЫЕ СКРУГЛЕННЫЕ УГЛЫ (ровные)
 local mainCorner = Instance.new("UICorner")
-mainCorner.CornerRadius = UDim.new(0, 12)
+mainCorner.CornerRadius = UDim.new(0, 12) -- 12 пикселей - ровное скругление
 mainCorner.Parent = mainFrame
 
--- Outer glow border (shadow)
+-- ============================================
+-- ВНЕШНЕЕ СВЕЧЕНИЕ
+-- ============================================
+
 local glowBorder = Instance.new("Frame")
 glowBorder.Name = "GlowBorder"
 glowBorder.Size = UDim2.new(1, 8, 1, 8)
 glowBorder.Position = UDim2.new(0, -4, 0, -4)
 glowBorder.BackgroundColor3 = Color3.fromRGB(120, 40, 200)
-glowBorder.BackgroundTransparency = 0.6
+glowBorder.BackgroundTransparency = 0.5
 glowBorder.BorderSizePixel = 0
 glowBorder.ClipsDescendants = true
 glowBorder.Parent = mainFrame
@@ -120,103 +105,58 @@ local glowCorner = Instance.new("UICorner")
 glowCorner.CornerRadius = UDim.new(0, 14)
 glowCorner.Parent = glowBorder
 
--- Inner subtle glow
-local innerGlow = Instance.new("Frame")
-innerGlow.Name = "InnerGlow"
-innerGlow.Size = UDim2.new(1, -2, 1, -2)
-innerGlow.Position = UDim2.new(0, 1, 0, 1)
-innerGlow.BackgroundColor3 = Color3.fromRGB(25, 23, 35)
-innerGlow.BackgroundTransparency = 0.7
-innerGlow.BorderSizePixel = 0
-innerGlow.Parent = mainFrame
-
-local innerGlowCorner = Instance.new("UICorner")
-innerGlowCorner.CornerRadius = UDim.new(0, 11)
-innerGlowCorner.Parent = innerGlow
-
--- Thin glowing outline
-local outline = Instance.new("Frame")
-outline.Name = "Outline"
-outline.Size = UDim2.new(1, 0, 1, 0)
-outline.Position = UDim2.new(0, 0, 0, 0)
-outline.BackgroundColor3 = Color3.fromRGB(150, 60, 220)
-outline.BackgroundTransparency = 0.4
-outline.BorderSizePixel = 1
-outline.ZIndex = 2
-outline.Parent = mainFrame
-
-local outlineCorner = Instance.new("UICorner")
-outlineCorner.CornerRadius = UDim.new(0, 12)
-outlineCorner.Parent = outline
-
 -- ============================================
--- HEADER - Transparent with white separator
+-- ЗАГОЛОВОК "EAR HUB"
 -- ============================================
 
+-- Верхняя панель (прозрачная)
 local headerBar = Instance.new("Frame")
 headerBar.Name = "HeaderBar"
-headerBar.Size = UDim2.new(1, 0, 0, 50)
+headerBar.Size = UDim2.new(1, 0, 0, 55)
 headerBar.Position = UDim2.new(0, 0, 0, 0)
 headerBar.BackgroundTransparency = 1
 headerBar.BorderSizePixel = 0
 headerBar.Parent = mainFrame
 
--- White separator line under header
+-- НАЗВАНИЕ "EAR HUB" (крупное, по центру)
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "Title"
+titleLabel.Size = UDim2.new(1, 0, 1, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "EAR HUB"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextSize = 28
+titleLabel.TextFont = Enum.Font.GothamBold
+titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+titleLabel.TextYAlignment = Enum.TextYAlignment.Center
+titleLabel.Parent = headerBar
+
+-- Разделительная линия под заголовком (белая, тонкая)
 local headerSep = Instance.new("Frame")
 headerSep.Name = "HeaderSeparator"
-headerSep.Size = UDim2.new(1, -40, 0, 1)
-headerSep.Position = UDim2.new(0, 20, 1, 0)
+headerSep.Size = UDim2.new(0.8, 0, 0, 1)
+headerSep.Position = UDim2.new(0.1, 0, 1, -2)
 headerSep.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-headerSep.BackgroundTransparency = 0.15
+headerSep.BackgroundTransparency = 0.2
 headerSep.BorderSizePixel = 0
 headerSep.Parent = headerBar
 
--- Title "EAR" (white) + "HUB" (purple)
-local titleContainer = Instance.new("Frame")
-titleContainer.Name = "TitleContainer"
-titleContainer.Size = UDim2.new(0, 200, 1, 0)
-titleContainer.Position = UDim2.new(0, 20, 0, 0)
-titleContainer.BackgroundTransparency = 1
-titleContainer.Parent = headerBar
+-- ============================================
+-- ИНФОРМАЦИЯ О ИГРОКЕ
+-- ============================================
 
-local earLabel = Instance.new("TextLabel")
-earLabel.Name = "EAR"
-earLabel.Size = UDim2.new(0, 60, 1, 0)
-earLabel.Position = UDim2.new(0, 0, 0, 0)
-earLabel.BackgroundTransparency = 1
-earLabel.Text = "EAR"
-earLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-earLabel.TextSize = 20
-earLabel.TextFont = Enum.Font.GothamMedium
-earLabel.TextXAlignment = Enum.TextXAlignment.Left
-earLabel.TextYAlignment = Enum.TextYAlignment.Center
-earLabel.Parent = titleContainer
-
-local hubLabel = Instance.new("TextLabel")
-hubLabel.Name = "HUB"
-hubLabel.Size = UDim2.new(0, 60, 1, 0)
-hubLabel.Position = UDim2.new(0, 55, 0, 0)
-hubLabel.BackgroundTransparency = 1
-hubLabel.Text = "HUB"
-hubLabel.TextColor3 = Color3.fromRGB(150, 60, 220)
-hubLabel.TextSize = 20
-hubLabel.TextFont = Enum.Font.GothamMedium
-hubLabel.TextXAlignment = Enum.TextXAlignment.Left
-hubLabel.TextYAlignment = Enum.TextYAlignment.Center
-hubLabel.Parent = titleContainer
-
--- Player Info Area
 local playerInfo = Instance.new("Frame")
 playerInfo.Name = "PlayerInfo"
-playerInfo.Size = UDim2.new(0, 160, 0, 28)
-playerInfo.Position = UDim2.new(1, -180, 0.5, -14)
-playerInfo.BackgroundColor3 = Color3.fromRGB(40, 35, 55)
-playerInfo.BackgroundTransparency = 0.3
+playerInfo.Size = UDim2.new(0, 180, 0, 32)
+playerInfo.Position = UDim2.new(0.5, -90, 0, 62)
+playerInfo.BackgroundColor3 = Color3.fromRGB(30, 28, 40)
+playerInfo.BackgroundTransparency = 0.4
 playerInfo.BorderSizePixel = 0
-playerInfo.Parent = headerBar
+playerInfo.Parent = mainFrame
 
 local playerInfoCorner = Instance.new("UICorner")
-playerInfoCorner.CornerRadius = UDim.new(0, 6)
+playerInfoCorner.CornerRadius = UDim.new(0, 8)
 playerInfoCorner.Parent = playerInfo
 
 local playerLevelLabel = Instance.new("TextLabel")
@@ -224,22 +164,22 @@ playerLevelLabel.Name = "LevelText"
 playerLevelLabel.Size = UDim2.new(1, 0, 1, 0)
 playerLevelLabel.Position = UDim2.new(0, 0, 0, 0)
 playerLevelLabel.BackgroundTransparency = 1
-playerLevelLabel.Text = "Player Level 100"
+playerLevelLabel.Text = "👤 Player Level 100"
 playerLevelLabel.TextColor3 = Color3.fromRGB(200, 190, 220)
-playerLevelLabel.TextSize = 13
+playerLevelLabel.TextSize = 14
 playerLevelLabel.TextFont = Enum.Font.GothamMedium
 playerLevelLabel.TextXAlignment = Enum.TextXAlignment.Center
 playerLevelLabel.TextYAlignment = Enum.TextYAlignment.Center
 playerLevelLabel.Parent = playerInfo
 
 -- ============================================
--- NAVIGATION TABS
+-- ВКЛАДКИ НАВИГАЦИИ
 -- ============================================
 
 local tabsContainer = Instance.new("Frame")
 tabsContainer.Name = "TabsContainer"
-tabsContainer.Size = UDim2.new(1, 0, 0, 40)
-tabsContainer.Position = UDim2.new(0, 0, 0, 50)
+tabsContainer.Size = UDim2.new(1, 0, 0, 45)
+tabsContainer.Position = UDim2.new(0, 0, 0, 105)
 tabsContainer.BackgroundTransparency = 1
 tabsContainer.Parent = mainFrame
 
@@ -252,17 +192,19 @@ local tabs = {
 }
 
 local tabButtons = {}
-local selectedTab = "Home"
+
+-- Ширина каждой вкладки
+local tabWidth = 128
 
 for i, tabData in ipairs(tabs) do
     local tabBtn = Instance.new("TextButton")
     tabBtn.Name = tabData.id .. "Tab"
-    tabBtn.Size = UDim2.new(0, 100, 1, 0)
-    tabBtn.Position = UDim2.new(0, (i - 1) * 100, 0, 0)
+    tabBtn.Size = UDim2.new(0, tabWidth, 1, 0)
+    tabBtn.Position = UDim2.new(0, (i - 1) * tabWidth, 0, 0)
     tabBtn.BackgroundTransparency = 1
     tabBtn.Text = tabData.name
     tabBtn.TextColor3 = Color3.fromRGB(180, 175, 195)
-    tabBtn.TextSize = 13
+    tabBtn.TextSize = 14
     tabBtn.TextFont = Enum.Font.GothamMedium
     tabBtn.TextXAlignment = Enum.TextXAlignment.Center
     tabBtn.TextYAlignment = Enum.TextYAlignment.Center
@@ -270,54 +212,63 @@ for i, tabData in ipairs(tabs) do
     tabBtn.AutoButtonColor = false
     tabBtn.Parent = tabsContainer
     
+    -- Индикатор выбранной вкладки
     local indicator = Instance.new("Frame")
     indicator.Name = "Indicator"
-    indicator.Size = UDim2.new(0, 40, 0, 2)
-    indicator.Position = UDim2.new(0.5, -20, 1, -2)
+    indicator.Size = UDim2.new(0, 60, 0, 3)
+    indicator.Position = UDim2.new(0.5, -30, 1, -3)
     indicator.BackgroundColor3 = Color3.fromRGB(150, 60, 220)
     indicator.BackgroundTransparency = 1
     indicator.BorderSizePixel = 0
     indicator.Parent = tabBtn
     
+    -- Скругление индикатора
+    local indicatorCorner = Instance.new("UICorner")
+    indicatorCorner.CornerRadius = UDim.new(0, 4)
+    indicatorCorner.Parent = indicator
+    
     tabButtons[tabData.id] = {button = tabBtn, indicator = indicator}
 end
 
-tabButtons["Home"].indicator.BackgroundTransparency = 0.1
+-- Выделяем HOME по умолчанию
+tabButtons["Home"].indicator.BackgroundTransparency = 0
 tabButtons["Home"].button.TextColor3 = Color3.fromRGB(230, 220, 255)
 
--- White separator under tabs
+-- Разделитель под вкладками
 local tabSeparator = Instance.new("Frame")
 tabSeparator.Name = "TabSeparator"
-tabSeparator.Size = UDim2.new(1, -40, 0, 1)
-tabSeparator.Position = UDim2.new(0, 20, 0, 40)
+tabSeparator.Size = UDim2.new(0.8, 0, 0, 1)
+tabSeparator.Position = UDim2.new(0.1, 0, 0, 45)
 tabSeparator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-tabSeparator.BackgroundTransparency = 0.08
+tabSeparator.BackgroundTransparency = 0.1
 tabSeparator.BorderSizePixel = 0
 tabSeparator.Parent = mainFrame
 
--- Content Area (empty placeholder)
+-- ============================================
+-- КОНТЕНТ (пустой)
+-- ============================================
+
 local contentArea = Instance.new("Frame")
 contentArea.Name = "ContentArea"
-contentArea.Size = UDim2.new(1, -40, 1, -95)
-contentArea.Position = UDim2.new(0, 20, 0, 50)
+contentArea.Size = UDim2.new(1, -40, 1, -165)
+contentArea.Position = UDim2.new(0, 20, 0, 155)
 contentArea.BackgroundTransparency = 1
 contentArea.Parent = mainFrame
 
 -- ============================================
--- TAB CLICK HANDLING
+-- ОБРАБОТКА КЛИКОВ ПО ВКЛАДКАМ
 -- ============================================
 
 local function selectTab(tabId)
     for id, data in pairs(tabButtons) do
         if id == tabId then
-            data.indicator.BackgroundTransparency = 0.1
+            data.indicator.BackgroundTransparency = 0
             data.button.TextColor3 = Color3.fromRGB(230, 220, 255)
         else
             data.indicator.BackgroundTransparency = 1
             data.button.TextColor3 = Color3.fromRGB(180, 175, 195)
         end
     end
-    selectedTab = tabId
 end
 
 for id, data in pairs(tabButtons) do
@@ -327,65 +278,27 @@ for id, data in pairs(tabButtons) do
 end
 
 -- ============================================
--- DECORATIVE ELEMENTS
+-- НИЖНЯЯ ДЕКОРАТИВНАЯ ЛИНИЯ
 -- ============================================
 
--- Bottom separator (white)
 local bottomSep = Instance.new("Frame")
 bottomSep.Name = "BottomSeparator"
-bottomSep.Size = UDim2.new(1, -40, 0, 1)
-bottomSep.Position = UDim2.new(0, 20, 1, -5)
+bottomSep.Size = UDim2.new(0.8, 0, 0, 1)
+bottomSep.Position = UDim2.new(0.1, 0, 1, -10)
 bottomSep.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-bottomSep.BackgroundTransparency = 0.06
+bottomSep.BackgroundTransparency = 0.08
 bottomSep.BorderSizePixel = 0
 bottomSep.Parent = mainFrame
 
--- Purple accent glows
-local bottomGlowLeft = Instance.new("Frame")
-bottomGlowLeft.Name = "BottomGlowLeft"
-bottomGlowLeft.Size = UDim2.new(0, 80, 0, 30)
-bottomGlowLeft.Position = UDim2.new(0, 0, 1, -30)
-bottomGlowLeft.BackgroundColor3 = Color3.fromRGB(120, 40, 200)
-bottomGlowLeft.BackgroundTransparency = 0.08
-bottomGlowLeft.BorderSizePixel = 0
-bottomGlowLeft.Parent = mainFrame
-
-local bottomGlowRight = Instance.new("Frame")
-bottomGlowRight.Name = "BottomGlowRight"
-bottomGlowRight.Size = UDim2.new(0, 80, 0, 30)
-bottomGlowRight.Position = UDim2.new(1, -80, 1, -30)
-bottomGlowRight.BackgroundColor3 = Color3.fromRGB(120, 40, 200)
-bottomGlowRight.BackgroundTransparency = 0.08
-bottomGlowRight.BorderSizePixel = 0
-bottomGlowRight.Parent = mainFrame
-
-local topGlowLeft = Instance.new("Frame")
-topGlowLeft.Name = "TopGlowLeft"
-topGlowLeft.Size = UDim2.new(0, 80, 0, 30)
-topGlowLeft.Position = UDim2.new(0, 0, 0, 0)
-topGlowLeft.BackgroundColor3 = Color3.fromRGB(120, 40, 200)
-topGlowLeft.BackgroundTransparency = 0.05
-topGlowLeft.BorderSizePixel = 0
-topGlowLeft.Parent = mainFrame
-
-local topGlowRight = Instance.new("Frame")
-topGlowRight.Name = "TopGlowRight"
-topGlowRight.Size = UDim2.new(0, 80, 0, 30)
-topGlowRight.Position = UDim2.new(1, -80, 0, 0)
-topGlowRight.BackgroundColor3 = Color3.fromRGB(120, 40, 200)
-topGlowRight.BackgroundTransparency = 0.05
-topGlowRight.BorderSizePixel = 0
-topGlowRight.Parent = mainFrame
-
 -- ============================================
--- DRAG SYSTEM
+-- ПЕРЕМЕЩЕНИЕ МЫШЬЮ
 -- ============================================
 
 local dragging = false
 local dragInput, dragStart, startPos
 
 mainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         dragStart = input.Position
         startPos = mainFrame.Position
@@ -399,7 +312,7 @@ mainFrame.InputBegan:Connect(function(input)
 end)
 
 mainFrame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
         dragInput = input
     end
 end)
@@ -412,7 +325,7 @@ UserInputService.InputChanged:Connect(function(input)
 end)
 
 -- ============================================
--- TOGGLE WITH INSERT KEY
+-- ВКЛ/ВЫКЛ ПО INSERT
 -- ============================================
 
 local guiVisible = true
@@ -425,38 +338,9 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 end)
 
 -- ============================================
--- ANTI-BAN / MASKING VERIFICATION
+-- УСПЕШНЫЙ ЗАПУСК
 -- ============================================
 
--- Randomize properties to look more like system GUI
-task.wait(0.5)
-local function randomizeSystemProperties()
-    -- Randomly change ZIndexBehavior to look more organic
-    local behaviors = {Enum.ZIndexBehavior.Sibling, Enum.ZIndexBehavior.Global}
-    screenGui.ZIndexBehavior = behaviors[math.random(1, #behaviors)]
-    
-    -- Randomize ResetOnSpawn (some system GUIs have it true)
-    if math.random(1, 10) > 7 then
-        screenGui.ResetOnSpawn = true
-    end
-end
-
--- Run randomization occasionally to avoid detection
-coroutine.wrap(function()
-    while screenGui and screenGui.Parent do
-        task.wait(math.random(300, 600))
-        randomizeSystemProperties()
-    end
-end)()
-
--- Print success with mask info
-print("[EAR HUB] Successfully loaded and masked as: " .. MASKED_NAME)
+print("[EAR HUB] Successfully loaded!")
 print("[EAR HUB] Press INSERT to toggle visibility")
-print("[EAR HUB] Running in CoreGui - Anti-ban protection active")
-
--- Return for external use
-return {
-    ScreenGui = screenGui,
-    MainFrame = mainFrame,
-    MaskedName = MASKED_NAME
-}
+print("[EAR HUB] Masked as: " .. MASKED_NAME)
