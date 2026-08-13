@@ -1,4 +1,4 @@
--- EAR HUB - Premium GUI Menu (CLEAN VERSION)
+-- EAR HUB - Premium GUI Menu (FULL SIZE)
 -- Roblox Volleyball Legend Script
 
 local CoreGui = game:GetService("CoreGui")
@@ -49,13 +49,13 @@ screenGui.Parent = CoreGui
 print("[EAR HUB] Loaded as: " .. MASKED_NAME)
 
 -- ============================================
--- ОСНОВНОЕ МЕНЮ (ЧЕРНОЕ)
+-- ОСНОВНОЕ МЕНЮ (640x470, ЧЕРНОЕ)
 -- ============================================
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(0, 640, 0, 200)
-mainFrame.Position = UDim2.new(0.5, -320, 0.5, -100)
+mainFrame.Size = UDim2.new(0, 640, 0, 470)
+mainFrame.Position = UDim2.new(0.5, -320, 0.5, -235)
 mainFrame.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
 mainFrame.BackgroundTransparency = 0
 mainFrame.BorderSizePixel = 0
@@ -93,7 +93,7 @@ title.TextYAlignment = Enum.TextYAlignment.Center
 title.Parent = header
 
 -- ============================================
--- РАЗДЕЛИТЕЛЬ ПОД ЗАГОЛОВКОМ (ФИОЛЕТОВЫЙ, ПОЛНЫЙ)
+-- РАЗДЕЛИТЕЛЬ (ФИОЛЕТОВЫЙ, ПОЛНЫЙ, ТОЛЬКО В ХЕДЕРЕ)
 -- ============================================
 
 local separator = Instance.new("Frame")
@@ -104,6 +104,17 @@ separator.BackgroundColor3 = Color3.fromRGB(140, 50, 210)
 separator.BackgroundTransparency = 0.3
 separator.BorderSizePixel = 0
 separator.Parent = header
+
+-- ============================================
+-- ПУСТАЯ ОБЛАСТЬ КОНТЕНТА
+-- ============================================
+
+local content = Instance.new("Frame")
+content.Name = "Content"
+content.Size = UDim2.new(1, 0, 1, -60)
+content.Position = UDim2.new(0, 0, 0, 60)
+content.BackgroundTransparency = 1
+content.Parent = mainFrame
 
 -- ============================================
 -- ПЕРЕМЕЩЕНИЕ
